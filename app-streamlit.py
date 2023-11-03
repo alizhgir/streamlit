@@ -57,9 +57,6 @@ st.title("Интерактивное приложение для логисти�
 
 # Загрузка данных
 uploaded_file = st.file_uploader("Загрузите ваш CSV файл", type="csv")
-url_input = st.text_input("или вставьте URL CSV файла")
-if url_input:
-    uploaded_file = url_input
 data = load_data(uploaded_file)
 
 def plot_graph(data, x, y, graph_type):
@@ -74,13 +71,15 @@ def plot_graph(data, x, y, graph_type):
     st.pyplot(plt)
     st.write(data)
 
-graph_type = st.selectbox('Выберите тип графика', ['scatter', 'bar', 'plot'])
-available_columns = data.columns.tolist()
-x_axis = st.selectbox('Выберите ось X', available_columns, index=0)
-y_axis = st.selectbox('Выберите ось Y', available_columns, index=min(1, len(available_columns)-1))
-plot_graph(data, x_axis, y_axis, graph_type)
 
 if data is not None:
+    
+    graph_type = st.selectbox('Выберите тип графика', ['scatter', 'bar', 'plot'])
+    available_columns = data.columns.tolist()
+    x_axis = st.selectbox('Выберите ось X', available_columns, index=0)
+    y_axis = st.selectbox('Выберите ось Y', available_columns, index=min(1, len(available_columns)-1))
+    plot_graph(data, x_axis, y_axis, graph_type)
+    
     # Выбор столбцов для обучения
     columns = data.columns.tolist()
     selected_features = st.multiselect("Выберите признаки для обучения", columns, default=columns[:-1])
@@ -119,9 +118,6 @@ if data is not None:
         st.error("Целевой столбец должен быть бинарным (0 или 1).")
         
 test_file = st.file_uploader("Загрузите ваш проверочный CSV файл", type="csv")
-url_input = st.text_input("или вставьте URL CSV файла")
-if url_input:
-    test_file = url_input
 test_data = load_data(test_file)
 
 if test_data is not None:
@@ -152,6 +148,3 @@ if test_data is not None:
         st.write(f'Accuracy: {accuracy_test:.2%}')
     else:
         st.error("Целевой столбец должен быть бинарным (0 или 1).")
-
-
-# Дальнейшее доработайте код, добавив отсутствующие функции для отображения графиков, предсказаний и сравнения с sklearn.
