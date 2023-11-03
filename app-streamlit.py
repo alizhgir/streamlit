@@ -117,12 +117,13 @@ if data is not None:
 
     else:
         st.error("Целевой столбец должен быть бинарным (0 или 1).")
-
-
-
         
 test_file = st.file_uploader("Загрузите ваш проверочный CSV файл", type="csv")
+url_input = st.text_input("или вставьте URL CSV файла")
+if url_input:
+    test_file = url_input
 test_data = load_data(test_file)
+
 if test_data is not None:
     # Выбор столбцов для тестирования
     columns = test_data.columns.tolist()
